@@ -8,7 +8,7 @@ const download = (id) => {
 
     //Configure YoutubeMp3Downloader with your settings
     var YD = new YoutubeMp3Downloader({
-      "ffmpegPath": "/Users/danielmartinez/Desktop/ffmpeg_lib", // FFmpeg binary location
+      "ffmpegPath": "/Users/danielmartinez/ffmpeg_lib", // FFmpeg binary location
       "outputPath": "./public/sound", // Output file location (default: the home directory)
     });
 
