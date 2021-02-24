@@ -6,14 +6,14 @@ const app = express();
 app.use(express.static('public'));
 
 app.get('/api/search', (req, res) => {
-  if (req.headers.token != 'lemkocecoàsàpskkskskks') {
+  // if (req.headers.token != 'lemkocecoàsàpskkskskks') {
 
-    res.status(403).json({
-      error: 'invalid token bro'
-    });
-    return;
+  //   res.status(403).json({
+  //     error: 'invalid token bro'
+  //   });
+  //   return;
 
-  }
+  // }
   search(req.query.songName).then(info => {
     console.log(info);
     res.json(info);

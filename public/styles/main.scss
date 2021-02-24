@@ -1,0 +1,88 @@
+:root {
+  --main-bg-color: #313152;
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #1e1e36;
+  display: flex;
+  width: 100vw;
+}
+.search {
+  padding: 1em;
+  width: 100px;
+  flex-grow: 1;
+  height: 100vh;
+  background-color: var(--main-bg-color);
+  margin-right: 2em;
+  &__form {
+    display: flex;
+    padding: 0.5em 0;
+    align-items: center;
+    position: relative;
+  }
+  &__bar {
+    width: 100%;
+    padding: 0 1em;
+    border: none;
+    height: 30px;
+    border-radius: 3px;
+    background-color: #4c4c73;
+    color: #a6a6c6;
+    &:focus {
+      outline: none;
+    }
+    &:hover {
+    }
+  }
+  &__btn {
+    margin-right: 0.5em;
+    right: 0;
+    position: absolute;
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+  }
+}
+.home {
+  padding-right: 2em;
+  width: 100px;
+  flex-grow: 4;
+  height: 100vh;
+  // background-color: orange;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  &__current-songs {
+    max-width: 1500px;
+    width: 100%;
+    height: 90px;
+    border-radius: 0 0 8px 8px;
+    background-color: var(--main-bg-color);
+  }
+  &__visualization {
+    width: 100%;
+    max-width: 1500px;
+    height: 60vmin;
+    background-color: white;
+    margin: 1em 0 1em 0;
+  }
+  &__controls {
+    width: 100%;
+    max-width: 1500px;
+    height: 180px;
+    background-color: var(--main-bg-color);
+    margin-bottom: 2em;
+    border-radius: 8px;
+  }
+}
