@@ -6,6 +6,10 @@ youTube.addParam('type', 'video');
 
 const search = (query) => {
   return new Promise((resolve, reject) => {
+    if (!query) {
+      reject('NOT TERM SELECTED')
+      return;
+    }
     youTube.search(query, 5, function (error, result) {
       if (error) {
         reject(error);
@@ -18,7 +22,6 @@ const search = (query) => {
           }
         });
         resolve(list);
-        console.log(result.items[0].id);
       }
     });
   })
