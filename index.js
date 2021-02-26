@@ -25,6 +25,18 @@ app.get('/api/search', (req, res) => {
   });
 });
 
+app.get('/api/download', (req, res) => {
+  download(req.query.id).then(() => {
+    res.json({
+      url: `/public/sound/${req.query.id}.mp3`
+    })
+  }).catch(err => {
+    res.json({
+      error: 'ups'
+    })
+  })
+})
+
 app.get('/', (req, res) => {
   res.sendFIle('./public/index.html');
 });
