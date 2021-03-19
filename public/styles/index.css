@@ -207,13 +207,114 @@
 }
 
 .footer {
-  background-color: #313152;
   width: 100%;
   height: 100%;
-  border-radius: 12px;
-  padding: 24px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.controls {
+  width: 200px;
+  background-color: #313152;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.controls__play {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: transparent;
+  border: none;
+}
+
+.controls__play img {
+  width: 40%;
+}
+
+.controls__play .playimg {
+  display: none;
+}
+
+.eq {
+  background-color: #313152;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-left: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+.eq__tabs {
+  width: 100px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.eq__tab {
+  width: 100%;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  border: none;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.eq__tab--vocals {
+  background-color: #0FA958;
+  background-image: url("../svg/vocals.svg");
+}
+
+.eq__tab--drums {
+  background-color: #F24E1E;
+  background-image: url("../svg/drums.svg");
+}
+
+.eq__tab--other {
+  background-color: #5551FF;
+  background-image: url("../svg/other.svg");
+}
+
+.eq__tab--bass {
+  background-color: #FFC700;
+  background-image: url("../svg/bass.svg");
+}
+
+.eq__content {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  background-color: #313152;
+  -ms-flex-preferred-size: 1;
+      flex-basis: 1;
+  padding: 10px;
+}
+
+.eq__canvas {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
 }
 
 .content {

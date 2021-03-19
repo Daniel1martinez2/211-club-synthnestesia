@@ -1,15 +1,14 @@
-const btn = document.createElement('button');
-btn.innerText = 'Begin';
-document.body.appendChild(btn);
+window.addEventListener('load', () => {
+  const controlsPlay = document.querySelector('.controls__play');
+  const eqTabs = document.querySelectorAll('.eq__tab');
 
-btn.addEventListener('click', () => {
   const ball1 = createBall(50, 300, 500, 'aqua');
   document.body.appendChild(ball1.elem);
 
   const ball2 = createBall(100, 200, 600, 'bisque');
   document.body.appendChild(ball2.elem);
   
-  const process = setupHistogram();
+  const { process, toggle, changeSound } = setupHistogram();
 
   const callback = () => {
     console.log('touch');
@@ -24,4 +23,22 @@ btn.addEventListener('click', () => {
   };
 
   draw();
+
+  const playImg = document.querySelector('.playimg');
+  const pauseImg = document.querySelector('.pauseimg');
+  controlsPlay.addEventListener('click', () => {
+    if(toggle()) {
+      playImg.style.display = 'block';
+      pauseImg.style.display = 'none';
+    } else {
+      playImg.style.display = 'none';
+      pauseImg.style.display = 'block';
+    }
+  });
+
+  eqTabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      changeSound(index);
+    });
+  })
 });

@@ -29,10 +29,32 @@
       <p class="especial-text">Chimba</p>
     </article>
     <footer class="footer">
-      <p class="title-text"> Controles</p>
+      <section class="controls">
+        <button class="controls__play">
+          <img class="playimg" src="./svg/play.svg" alt="">
+          <img class="pauseimg" src="./svg/pause.svg" alt="">
+        </button>
+      </section>
+      <section class="eq">
+        <div class="eq__tabs">
+          <button class="eq__tab eq__tab--vocals"></button>
+          <button class="eq__tab eq__tab--drums"></button>
+          <button class="eq__tab eq__tab--other"></button>
+          <button class="eq__tab eq__tab--bass"></button>
+        </div>
+        <div class="eq__content">
+          <canvas class="eq__canvas"></canvas>
+        </div>
+      </section>
     </footer>
   </main>
   <script src="./js/main.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
+  <script src="./js/getAudioInfo.js"></script>
+  <script src="./js/setupHistogram.js"></script>
+  <script src="./js/visualization.js"></script>
+  <script src="./js/audioTest.js"></script>
 </body>
 
 </html>

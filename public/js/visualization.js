@@ -17,8 +17,17 @@ function createBall (tam, posX, posY, color) {
     tl.play(0);
   }
 
+  let barSelected = 0;
+  let threshold = 0;
+  let lastTouch = 0;
+  let sound = 0;
+
   return {
     elem: ball,
     pulse,
+    barSelected,
+    threshold,
+    lastTouch,
+    sound,
   };
 }
