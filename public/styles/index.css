@@ -343,6 +343,46 @@
   opacity: 0.5;
 }
 
+.shape-menu {
+  position: fixed;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background-color: #4c4c73;
+  padding: 9px 6px;
+  border-radius: 4px;
+  -webkit-box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.3);
+          box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.shape-menu label {
+  color: #77779d;
+  margin-bottom: 4px;
+}
+
+.shape-menu__item-color {
+  width: 100%;
+}
+
+.shape-menu::before {
+  content: "";
+  position: absolute;
+  border-width: 15px;
+  border-style: solid;
+  border-color: transparent;
+  border-top-color: #4c4c73;
+  bottom: -29px;
+  left: 38%;
+}
+
+.shape-menu--hidden {
+  display: none;
+}
+
 .anim-menu {
   position: fixed;
   width: 50px;

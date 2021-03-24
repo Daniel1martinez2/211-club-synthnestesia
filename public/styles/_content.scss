@@ -17,7 +17,39 @@
   font-size: 60px;
   opacity: 0.5;
 }
+// ------------------------------------------------
+.shape-menu {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  background-color: #4c4c73;
+  padding: 9px 6px;
+  border-radius: 4px;
+  box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.3);
+  label {
+    color: #77779d;
+    margin-bottom: 4px;
+  }
+  &__item-color {
+    width: 100%;
+  }
 
+  &::before {
+    content: "";
+    position: absolute;
+    border-width: 15px;
+    border-style: solid;
+    border-color: transparent;
+    border-top-color: #4c4c73;
+    bottom: -29px;
+    left: 38%;
+  }
+
+  &--hidden {
+    display: none;
+  }
+}
+// ------------------------------------------------
 .anim-menu {
   position: fixed;
   width: 50px;

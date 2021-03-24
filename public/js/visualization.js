@@ -1,5 +1,4 @@
-
-function createBall (tam, posX, posY) {
+function createBall(tam, posX, posY) {
   const ball = document.createElement('div');
   ball.classList.add('viz_ball');
   ball.style.width = tam + 'px';
@@ -9,11 +8,19 @@ function createBall (tam, posX, posY) {
   ball.style.backgroundColor = 'black';
 
   var tl = gsap.timeline({});
-  tl.to(ball, { scale: 2, opacity: 1, duration: .1 });
-  tl.to(ball, { scale: 1, opacity: .2, duration: 1 });
+  tl.to(ball, {
+    scale: 2,
+    opacity: 1,
+    duration: .1
+  });
+  tl.to(ball, {
+    scale: 1,
+    opacity: .2,
+    duration: 1
+  });
   tl.pause();
 
-  function pulse () {
+  function pulse() {
     tl.play(0);
   }
 
