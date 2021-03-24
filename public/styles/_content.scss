@@ -12,27 +12,43 @@
 
 .especial-text {
   font-weight: bold;
-  color: #D2D2D2;
+  color: #d2d2d2;
   text-transform: uppercase;
   font-size: 60px;
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .anim-menu {
   position: fixed;
-  width: 200px;
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 4px 4px 5px rgba(0,0,0,.4);
-  padding: 10px 0;
+  width: 50px;
+  background-color: #f5f3f3;
+  border-radius: 4px;
+  box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  // padding: 10px 0;
+  overflow: hidden;
 
   &__item {
     border: none;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid #cfcfcf;
     width: 100%;
     text-align: left;
     background-color: transparent;
-    padding: 2px 4px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background-color: #313152;
+    }
+    img {
+      width: 60%;
+    }
+    &:last-child {
+      border-bottom: transparent;
+    }
   }
 
   &--hidden {

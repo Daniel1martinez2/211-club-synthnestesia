@@ -337,29 +337,55 @@
 
 .especial-text {
   font-weight: bold;
-  color: #D2D2D2;
+  color: #d2d2d2;
   text-transform: uppercase;
   font-size: 60px;
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .anim-menu {
   position: fixed;
-  width: 200px;
-  background-color: white;
-  border-radius: 5px;
-  -webkit-box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4);
-          box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4);
-  padding: 10px 0;
+  width: 50px;
+  background-color: #f5f3f3;
+  border-radius: 4px;
+  -webkit-box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.2);
+          box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  overflow: hidden;
 }
 
 .anim-menu__item {
   border: none;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid #cfcfcf;
   width: 100%;
   text-align: left;
   background-color: transparent;
-  padding: 2px 4px;
+  padding: 8px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.anim-menu__item:hover {
+  background-color: #313152;
+}
+
+.anim-menu__item img {
+  width: 60%;
+}
+
+.anim-menu__item:last-child {
+  border-bottom: transparent;
 }
 
 .anim-menu--hidden {
