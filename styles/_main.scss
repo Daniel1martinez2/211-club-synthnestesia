@@ -1,0 +1,12 @@
+.main {
+  width: calc(100% - 48px);
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 20% 1fr 20%;
+  padding: 24px;
+  box-sizing: border-box;
+  row-gap: 24px;
+  &__songs-container {
+    display: flex;
+  }
+}

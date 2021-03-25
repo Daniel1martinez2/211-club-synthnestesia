@@ -1,4 +1,1 @@
-node_modules
-public/sound/*.mp3
-yarn.lock
-package-lock.json
+test-audio-files
