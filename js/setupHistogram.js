@@ -8,23 +8,24 @@ function setupHistogram (shapes) {
   let selectedShape = -1;
 
   window.addEventListener('keydown', ({ key }) => {
-    if(!shapes[selectedShape]) return;
-    const bs = shapes[selectedShape].barSelected;
-    const length = sounds[shapes[selectedShape].sound].length;
+    const shape = shapes[selectedShape];
+    if(!shape) return;
+    const bs = shape.variables.barSelected;
+    const length = sounds[shape.variables.sound].length;
     switch(key) {
       case 'ArrowRight':
-        shapes[selectedShape].barSelected += 1;
-        if(bs >= length) shapes[selectedShape].barSelected = 0;
+        shape.variables.barSelected += 1;
+        if(bs >= length) shape.variables.barSelected = 0;
         break;
       case 'ArrowLeft':
-        shapes[selectedShape].barSelected -= 1;
-        if(bs < 0) shapes[selectedShape].barSelected = length - 1;
+        shape.variables.barSelected -= 1;
+        if(bs < 0) shape.variables.barSelected = length - 1;
         break;
       case 'ArrowUp':
-        shapes[selectedShape].threshold += 1;
+        shape.variables.threshold += 1;
         break;
       case 'ArrowDown':
-        shapes[selectedShape].threshold -= 1;
+        shape.variables.threshold -= 1;
         break;
     }
   });
@@ -36,7 +37,7 @@ function setupHistogram (shapes) {
       //Get spectrum data
       analyser.getFloatFrequencyData(data);
 
-      const { barSelected, threshold, sound } = shapes[selectedShape] || {};
+      const { barSelected, threshold, sound } = shapes[selectedShape]?.variables || {};
       if(soundIndex === sound) {
         // only draw info of selected sound and selected shape
         canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
@@ -53,10 +54,10 @@ function setupHistogram (shapes) {
 
       // we need to process all shapes and animate, regarless if it's selected or not
       shapes.forEach(shape => {
-        if(soundIndex === shape.sound // if current sound data is same as sound selected for this shape
-          && data[shape.barSelected] >= shape.threshold // if current volume is greater than or equals as threshold
-          && Date.now() - shape.lastTouch > 200) { // if last touch was 200 or more milliseconds ago
-          shape.lastTouch = Date.now();
+        if(soundIndex === shape.variables.sound // if current sound data is same as sound selected for this shape
+          && data[shape.variables.barSelected] >= shape.variables.threshold // if current volume is greater than or equals as threshold
+          && Date.now() - shape.variables.lastTouch > 200) { // if last touch was 200 or more milliseconds ago
+          shape.variables.lastTouch = Date.now();
           shape.pulse();
         }
       });
@@ -72,12 +73,12 @@ function setupHistogram (shapes) {
 
   function changeSound (index) {
     if(!shapes[selectedShape]) return;
-    shapes[selectedShape].sound = index;
+    shapes[selectedShape].variables.sound = index;
   }
 
   function changeShape (index) {
     selectedShape = index;
-    selectedSound = shapes[index].sound;
+    selectedSound = shapes[index].variables.sound;
   }
 
   return {

@@ -320,7 +320,6 @@
 .content {
   background-color: #e9e9e9;
   border-radius: 8px;
-  padding: 24px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   display: -webkit-box;
@@ -335,6 +334,13 @@
   position: relative;
 }
 
+.content__inner {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
 .especial-text {
   font-weight: bold;
   color: #d2d2d2;
@@ -344,7 +350,7 @@
 }
 
 .shape-menu {
-  position: fixed;
+  position: absolute;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -357,6 +363,7 @@
   border-radius: 4px;
   -webkit-box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.3);
           box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.3);
+  width: 180px;
 }
 
 .shape-menu label {
@@ -368,6 +375,25 @@
   width: 100%;
 }
 
+.shape-menu__colors {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: -5px;
+}
+
+.shape-menu__colors > * {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  margin: 5px;
+}
+
 .shape-menu::before {
   content: "";
   position: absolute;
@@ -376,7 +402,7 @@
   border-color: transparent;
   border-top-color: #4c4c73;
   bottom: -29px;
-  left: 38%;
+  left: calc(50% - 7.5%);
 }
 
 .shape-menu--hidden {
@@ -441,6 +467,8 @@
   background-color: aqua;
   position: absolute;
   z-index: 100;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
 }
 
 .selected {

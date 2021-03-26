@@ -1,46 +1,126 @@
-const searchBar = document.querySelector('.search-input');
-const searchBtn = document.querySelector('.search-btn');
-const resultContainer = document.querySelector('.result');
-//estas son las ya seleccionadas
-const songsContainer = document.querySelector('.main__songs-container');
+window.addEventListener('load', () => {
 
-searchBtn.addEventListener('click', (event) => {
-  const name = searchBar.value;
-  fetch(`/api/search?songName=${name}`).then(raw => {
-    return raw.json();
-  }).then(list => {
-    resultContainer.innerHTML = '';
-    list.forEach(obj => {
-      const resultItem = document.createElement('div');
-      resultItem.classList.add('result-item');
-      resultItem.innerHTML = ` 
-      <div class="result-item-content">
-        <img  src="${obj.url}" class="result-item-content-img">
-        <div class="result-item-content-text">
-          <p>${obj.title.length > 12 ? obj.title.substring(0,12)+'...' : obj.title}</p>
-        </div>
-      </div>`;
-      resultContainer.appendChild(resultItem);
-      const clickHandler = () => {
+  const content = document.querySelector('.content');
+  const contentInner = document.querySelector('.content__inner');
+  const animMenu = document.querySelector('.anim-menu');
+  const shapeMenu = document.querySelector('.shape-menu');
+  const shapeMenuSize = shapeMenu.querySelector('.shape-menu__item-size');
+  const shapeMenuColors = shapeMenu.querySelectorAll('.shape-menu__colors *');
 
-        resultItem.removeEventListener('click', clickHandler);
-        const id = obj.id;
-        songsContainer.appendChild(resultItem);
-        resultItem.classList.add('result-item--vertical');
-        resultItem.classList.add('result-item--wait');
-        resultContainer.innerHTML = '';
-        searchBar.value = '';
-        //siempreeeeeeeeeee un .then y raw luego de un fetch
-        fetch(`/api/download?id=${id}`).then(raw => {
-          return raw.json();
-        }).then(sound => {
-          resultItem.classList.remove('result-item--wait');
-        });
+  const newShapePos = {
+    x: 0,
+    y: 0
+  };
+
+  let selectedShape = null;
+
+  const handlerAnimMenu = (event) => {
+    event.preventDefault();
+    shapeMenu.classList.add('shape-menu--hidden');
+    animMenu.classList.remove('anim-menu--hidden');
+    animMenu.style.top = `${event.y}px`;
+    animMenu.style.left = `${event.x}px`;
+    newShapePos.x = event.offsetX;
+    newShapePos.y = event.offsetY;
+  }
+  content.addEventListener('contextmenu', handlerAnimMenu);
+
+  const repositionShapeMenu = (size) => {
+    shapeMenu.style.transform = `translate(-50%, calc(-100% - ${size / 2 + 17}px))`;
+  }
+
+  animMenu.querySelectorAll('button').forEach((item, index) => {
+    item.addEventListener('click', () => {
+      let newShape;
+      switch (index) {
+        case 0:
+          newShape = createBall();
+          break;
+        case 1:
+        default:
+          break;
       }
-      resultItem.addEventListener('click', clickHandler)
+
+      newShape.setSize(50);
+      newShape.setColor('black');
+      newShape.setPos(newShapePos.x, newShapePos.y);
+      contentInner.appendChild(newShape.elem);
+      const shapeIndex = shapes.length;
+      
+      const selectShape = () => {
+        changeShape(shapeIndex);
+        selectedShape = newShape;
+        shapes.forEach(s => s.elem.classList.remove('selected'));
+        newShape.elem.classList.add('selected');
+      }
+      newShape.elem.addEventListener('click', selectShape);
+
+      //create right click event, which is another menu that modify the shape 
+      newShape.elem.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        selectShape();
+        shapeMenuSize.value = newShape.variables.size;
+        shapeMenu.classList.remove('shape-menu--hidden');
+        shapeMenu.style.top = `${newShape.variables.y}px`;
+        shapeMenu.style.left = `${newShape.variables.x}px`;
+        repositionShapeMenu(newShape.variables.size);
+      });
+      shapes.push(newShape);
     });
-    console.log(list);
-  }).catch(err => {
-    console.log('mmmmmm');
   });
+
+  window.addEventListener('click', () => {
+    animMenu.classList.add('anim-menu--hidden');
+    shapeMenu.classList.add('shape-menu--hidden');
+  });
+
+  shapeMenuSize.addEventListener('input', (event) => {
+    selectedShape.setSize(parseInt(event.target.value));
+    repositionShapeMenu(selectedShape.variables.size);
+  });
+
+  shapeMenuColors.forEach(color => {
+    color.addEventListener('click', () => {
+      selectedShape.setColor(color.style.backgroundColor);
+    });
+  })
+
+  const controlsPlay = document.querySelector('.controls__play');
+  const eqTabs = document.querySelectorAll('.eq__tab');
+
+  const shapes = [];
+
+  const {
+    process,
+    toggle,
+    changeSound,
+    changeShape
+  } = setupHistogram(shapes);
+
+  function draw() {
+    //Schedule next redraw
+    requestAnimationFrame(draw);
+    process();
+  };
+
+  draw();
+
+  const playImg = document.querySelector('.playimg');
+  const pauseImg = document.querySelector('.pauseimg');
+  controlsPlay.addEventListener('click', () => {
+    if (toggle()) {
+      playImg.style.display = 'block';
+      pauseImg.style.display = 'none';
+    } else {
+      playImg.style.display = 'none';
+      pauseImg.style.display = 'block';
+    }
+  });
+
+  eqTabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      changeSound(index);
+    });
+  })
 });

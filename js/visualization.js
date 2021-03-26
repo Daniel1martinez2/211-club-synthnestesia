@@ -1,11 +1,6 @@
-function createBall(tam, posX, posY) {
+function createBall() {
   const ball = document.createElement('div');
   ball.classList.add('viz_ball');
-  ball.style.width = tam + 'px';
-  ball.style.height = tam + 'px';
-  ball.style.top = posY + 'px';
-  ball.style.left = posX + 'px';
-  ball.style.backgroundColor = 'black';
 
   var tl = gsap.timeline({});
   tl.to(ball, {
@@ -24,20 +19,43 @@ function createBall(tam, posX, posY) {
     tl.play(0);
   }
 
-  let barSelected = 0;
-  let threshold = 0;
-  let lastTouch = 0;
-  let sound = 0;
-  let start = 0;
-  let end = 0;
-  let color = 'red';
+  const variables = {
+    barSelected: 0,
+    threshold: 0,
+    lastTouch: 0,
+    sound: 0,
+    start: 0,
+    end: 0,
+    color: '',
+    size: 0,
+    x: 0,
+    y: 0,
+  }
+
+  const setSize = (newSize) => {
+    variables.size = newSize;
+    ball.style.width = variables.size + 'px';
+    ball.style.height = variables.size + 'px';
+  }
+
+  const setColor = (newColor) => {
+    variables.color = newColor;
+    ball.style.backgroundColor = newColor;
+  }
+  
+  const setPos = (x, y) => {
+    variables.x = x;
+    variables.y = y;
+    ball.style.top = y + 'px';
+    ball.style.left = x + 'px';
+  }
 
   return {
     elem: ball,
     pulse,
-    barSelected,
-    threshold,
-    lastTouch,
-    sound,
+    setSize,
+    setColor,
+    setPos,
+    variables,
   };
 }
