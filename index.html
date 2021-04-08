@@ -10,20 +10,7 @@
 </head>
 
 <body class="body">
-  <aside class="search-bar">
-    <div class="search">
-      <input class="search-input" type="text" placeholder="Busca una canción">
-      <button class="search-btn">Buscar</button>
-    </div>
-    <article class="result">
-
-    </article>
-  </aside>
   <main class="main">
-    <header class="header">
-      <p class="title-text">Canciones seleccionadas</p>
-      <div class="main__songs-container"></div>
-    </header>
     <article class="content">
       <div class="content__inner"></div>
       <!-- shape menu -->
@@ -52,6 +39,11 @@
         <button class="anim-menu__item"><img src="./svg/circleAnim.svg" alt=""></button>
       </div>
     </article>
+    <section class="tracks">
+      <div class="tracks__item">
+        <input type="file" accept=".mp3,.wav">
+      </div>
+    </section>
     <footer class="footer">
       <section class="controls">
         <button class="controls__play">
@@ -60,12 +52,6 @@
         </button>
       </section>
       <section class="eq">
-        <div class="eq__tabs">
-          <button class="eq__tab eq__tab--vocals"></button>
-          <button class="eq__tab eq__tab--drums"></button>
-          <button class="eq__tab eq__tab--other"></button>
-          <button class="eq__tab eq__tab--bass"></button>
-        </div>
         <div class="eq__content">
           <canvas class="eq__canvas"></canvas>
         </div>

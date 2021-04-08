@@ -29,44 +29,49 @@ window.addEventListener('load', () => {
     shapeMenu.style.transform = `translate(-50%, calc(-100% - ${size / 2 + 17}px))`;
   }
 
+  const createShape = (shapeType, size, color, pos) => {
+    let newShape;
+    switch (shapeType) {
+      case 0:
+        newShape = createBall();
+        break;
+      case 1:
+      default:
+        break;
+    }
+
+    newShape.setSize(size);
+    newShape.setColor(color);
+    newShape.setPos(pos.x, pos.y);
+    contentInner.appendChild(newShape.elem);
+    const shapeIndex = shapes.length;
+    
+    const selectShape = () => {
+      changeShape(shapeIndex);
+      selectedShape = newShape;
+      shapes.forEach(s => s.elem.classList.remove('selected'));
+      newShape.elem.classList.add('selected');
+      activateTrackItem(selectedShape.variables.sound);
+    }
+    newShape.elem.addEventListener('click', selectShape);
+
+    //create right click event, which is another menu that modify the shape 
+    newShape.elem.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      selectShape();
+      shapeMenuSize.value = newShape.variables.size;
+      shapeMenu.classList.remove('shape-menu--hidden');
+      shapeMenu.style.top = `${newShape.variables.y}px`;
+      shapeMenu.style.left = `${newShape.variables.x}px`;
+      repositionShapeMenu(newShape.variables.size);
+    });
+    shapes.push(newShape);
+  }
+
   animMenu.querySelectorAll('button').forEach((item, index) => {
     item.addEventListener('click', () => {
-      let newShape;
-      switch (index) {
-        case 0:
-          newShape = createBall();
-          break;
-        case 1:
-        default:
-          break;
-      }
-
-      newShape.setSize(50);
-      newShape.setColor('black');
-      newShape.setPos(newShapePos.x, newShapePos.y);
-      contentInner.appendChild(newShape.elem);
-      const shapeIndex = shapes.length;
-      
-      const selectShape = () => {
-        changeShape(shapeIndex);
-        selectedShape = newShape;
-        shapes.forEach(s => s.elem.classList.remove('selected'));
-        newShape.elem.classList.add('selected');
-      }
-      newShape.elem.addEventListener('click', selectShape);
-
-      //create right click event, which is another menu that modify the shape 
-      newShape.elem.addEventListener('contextmenu', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        selectShape();
-        shapeMenuSize.value = newShape.variables.size;
-        shapeMenu.classList.remove('shape-menu--hidden');
-        shapeMenu.style.top = `${newShape.variables.y}px`;
-        shapeMenu.style.left = `${newShape.variables.x}px`;
-        repositionShapeMenu(newShape.variables.size);
-      });
-      shapes.push(newShape);
+      createShape(index, 50, 'black', newShapePos);
     });
   });
 
@@ -87,16 +92,45 @@ window.addEventListener('load', () => {
   })
 
   const controlsPlay = document.querySelector('.controls__play');
-  const eqTabs = document.querySelectorAll('.eq__tab');
 
   const shapes = [];
+  const sounds = [];
+
+  const activateTrackItem = (trackItemIndex) => {
+    document.querySelector('.tracks__item--active')?.classList.remove('tracks__item--active');
+    document.querySelector(`.tracks__item:nth-child(${trackItemIndex + 1})`)?.classList.add('tracks__item--active');
+  }
+
+  // aquí estamos haciendo el proceso de cargar archivos y añadiéndolo a sounds
+  const Blob = window.URL || window.webkitURL;
+  const tracks = document.querySelector('.tracks');
+  const fileInput = document.querySelector('.tracks input');
+  fileInput.addEventListener('change', (event) => {
+    const file = fileInput.files[0];
+    const fileURL = Blob.createObjectURL(file);
+    const sound = getAudioInfo(fileURL);
+    const index = sounds.length;
+    sounds.push(sound);
+
+    sounds.forEach(({ elem }) => elem.currentTime = 0);
+
+    const trackItem = document.createElement('button');
+    trackItem.classList.add('tracks__item');
+    trackItem.innerText = file.name;
+    tracks.insertBefore(trackItem, fileInput.parentNode);
+
+    trackItem.addEventListener('click', () => {
+      changeSound(index);
+      activateTrackItem(index);
+    });
+  });
 
   const {
     process,
     toggle,
     changeSound,
     changeShape
-  } = setupHistogram(shapes);
+  } = setupHistogram(shapes, sounds);
 
   function draw() {
     //Schedule next redraw
@@ -106,21 +140,35 @@ window.addEventListener('load', () => {
 
   draw();
 
+  function updateLocalStorage () {
+    const shapesVariables = shapes.map(({ variables }) => variables);
+    localStorage.setItem('shapes', JSON.stringify(shapesVariables));
+  }
+  
+  function recreateFromLocalStorage () {
+    const shapesFromLS = localStorage.getItem('shapes');
+    if(shapesFromLS) {
+      const shapesVariables = JSON.parse(shapesFromLS);
+      shapesVariables.forEach(variables => {
+        createShape(0, variables.size, variables.color, variables);
+      });
+    }
+  }
+  recreateFromLocalStorage();
+
+  window.addEventListener('click', updateLocalStorage);
+
   const playImg = document.querySelector('.playimg');
   const pauseImg = document.querySelector('.pauseimg');
   controlsPlay.addEventListener('click', () => {
     if (toggle()) {
       playImg.style.display = 'block';
       pauseImg.style.display = 'none';
+      fileInput.parentElement.classList.add('tracks__item--disabled');
     } else {
       playImg.style.display = 'none';
       pauseImg.style.display = 'block';
+      fileInput.parentElement.classList.remove('tracks__item--disabled');
     }
   });
-
-  eqTabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => {
-      changeSound(index);
-    });
-  })
 });

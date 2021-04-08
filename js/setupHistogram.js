@@ -1,9 +1,8 @@
-function setupHistogram (shapes) {
+function setupHistogram (shapes, sounds) {
   const canvas = document.querySelector('.eq__canvas');
   const canvasCtx = canvas.getContext('2d');
-
-  const sounds = [ 'vocals', 'drums', 'other', 'bass' ].map(sound => getAudioInfo(`./test-audio-files/${sound}.wav`));
-  const colors = [ '#0FA958', '#F24E1E', '#5551FF', '#FFC700' ];
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
 
   let selectedShape = -1;
 
@@ -45,7 +44,7 @@ function setupHistogram (shapes) {
         const getHeight = (n) => (n + 90) * 2;
         for (let i = 0; i < length; i++) {
           const barHeight = getHeight(data[i]);
-          canvasCtx.fillStyle = i === barSelected ? 'rgb(220,220, 220)' : colors[sound];
+          canvasCtx.fillStyle = i === barSelected ? 'rgb(220,220, 220)' : '#70709F';
           canvasCtx.fillRect(barWidth * i, canvas.height - barHeight / 2, barWidth, barHeight / 2);
         }
         canvasCtx.fillStyle = 'rgb(40, 250, 30)';
