@@ -1,9 +1,9 @@
-const getAudioInfo = (src) => {
+const getAudioInfo = ({ url, name }) => {
   const audioCtx = new AudioContext();
   //Create audio source
   //Here, we use an audio file, but this could also be e.g. microphone input
   const elem = new Audio();
-  elem.src = src;//insert file name here
+  elem.src = url;//insert file name here
   // elem.autoplay = true;
   elem.loop = true;
   elem.preload = 'auto';
@@ -22,5 +22,7 @@ const getAudioInfo = (src) => {
     data,
     length,
     elem,
+    url,
+    name,
   };
 }
