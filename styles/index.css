@@ -341,6 +341,10 @@
   overflow: hidden;
 }
 
+.content__svg {
+  position: absolute;
+}
+
 .especial-text {
   font-weight: bold;
   color: #d2d2d2;
