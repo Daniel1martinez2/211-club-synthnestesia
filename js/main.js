@@ -45,7 +45,7 @@ window.addEventListener('load', () => {
     newShape.setPos(pos.x, pos.y);
     contentInner.appendChild(newShape.elem);
     const shapeIndex = shapes.length;
-    
+
     const selectShape = () => {
       changeShape(shapeIndex);
       selectedShape = newShape;
@@ -101,29 +101,107 @@ window.addEventListener('load', () => {
     document.querySelector(`.tracks__item:nth-child(${trackItemIndex + 1})`)?.classList.add('tracks__item--active');
   }
 
+  let db;
+  //stuff
+  let request = indexedDB.open('testPics', 1);
+
+  request.onerror = function(e) {
+    console.error('Unable to open database.');
+  }
+
+  request.onsuccess = function(e) {
+    db = e.target.result;
+    console.log('db opened');
+
+
+    let trans = db.transaction(['cachedForms'], 'readonly');
+
+    let req = trans.objectStore('cachedForms').get(4);
+    req.onsuccess = function(e) {
+      let record = e.target.result;
+      console.log('get success', (record.data));
+      const sound = getAudioInfo({ url: record.data, name: 'ásdasda' })
+      console.log(sound);
+sounds.push(sound)
+      //sound.elem.play();
+      //const file = new Blob(new Uint8Array(record.data));
+      //console.log(file)
+      
+      //image.src = 'data:image/jpeg;base64,' + btoa(record.data);
+    }
+  }
+
+  request.onupgradeneeded = function(e) {
+    let db = e.target.result;
+    db.createObjectStore('cachedForms', {keyPath:'id', autoIncrement: true});
+    dbReady = true;
+  }
+
+
   // aquí estamos haciendo el proceso de cargar archivos y añadiéndolo a sounds
   const Blob = window.URL || window.webkitURL;
   const tracks = document.querySelector('.tracks');
   const fileInput = document.querySelector('.tracks input');
+
   fileInput.addEventListener('change', (event) => {
     const file = fileInput.files[0];
     const fileURL = Blob.createObjectURL(file);
-    const sound = getAudioInfo(fileURL);
+    createSound({ url: fileURL, name: file.name }); 
+
+    var reader = new FileReader()
+    reader.readAsDataURL(file);
+
+    reader.onload = function(e) {
+      //alert(e.target.result);
+      let bits = e.target.result;
+      let ob = {
+        created:new Date(),
+        data:bits
+      };
+
+      let trans = db.transaction(['cachedForms'], 'readwrite');
+      let addReq = trans.objectStore('cachedForms').add(ob);
+
+      addReq.onerror = function(e) {
+        console.log('error storing data');
+        console.error(e);
+      }
+
+      trans.oncomplete = function(e) {
+        console.log('data stored');
+      }
+    }
+  });
+  //creat sounds >>>>>>
+  const createSound = ({ url, name }) => {
+    if(!url || !name) return;
+    const sound = getAudioInfo({ url, name });
     const index = sounds.length;
     sounds.push(sound);
+    setVolume(); 
 
     sounds.forEach(({ elem }) => elem.currentTime = 0);
 
     const trackItem = document.createElement('button');
     trackItem.classList.add('tracks__item');
-    trackItem.innerText = file.name;
+    trackItem.innerText = name;
     tracks.insertBefore(trackItem, fileInput.parentNode);
 
     trackItem.addEventListener('click', () => {
       changeSound(index);
       activateTrackItem(index);
     });
-  });
+  }
+
+
+  const volumeRange = document.querySelector('.controls__volume'); 
+  const setVolume = () => {
+    sounds.forEach((sound) => {
+      sound.elem.volume = volumeRange.value; 
+    })
+  }
+
+  volumeRange.addEventListener('input', setVolume);
 
   const {
     process,
@@ -140,18 +218,27 @@ window.addEventListener('load', () => {
 
   draw();
 
-  function updateLocalStorage () {
+  function updateLocalStorage() {
+    const soundURLs = sounds.map(({ url, name }) => ({ url, name }));
     const shapesVariables = shapes.map(({ variables }) => variables);
+
     localStorage.setItem('shapes', JSON.stringify(shapesVariables));
+    localStorage.setItem('soundURLs', JSON.stringify(soundURLs));
   }
-  
-  function recreateFromLocalStorage () {
+  //recreating the localStorage data
+  function recreateFromLocalStorage() {
     const shapesFromLS = localStorage.getItem('shapes');
-    if(shapesFromLS) {
+    const soundURLsFromLS = localStorage.getItem('soundURLs'); 
+    if (shapesFromLS) {
       const shapesVariables = JSON.parse(shapesFromLS);
       shapesVariables.forEach(variables => {
         createShape(0, variables.size, variables.color, variables);
       });
+    }
+    if(soundURLsFromLS){
+      const soundURLs = JSON.parse(soundURLsFromLS); 
+      //paso la función de esa manera, porque el primer elemento que el forEach dá es el objeto iterado
+      soundURLs.forEach(createSound); 
     }
   }
   recreateFromLocalStorage();
