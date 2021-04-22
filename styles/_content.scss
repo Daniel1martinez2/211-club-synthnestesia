@@ -16,8 +16,14 @@
   }
 
   &__svg {
+    fill: none;
     position: absolute;
-    // pointer-events: none;
+  }
+
+  &:hover {
+    .viz_line_anchor {
+      opacity: 1;
+    }
   }
 }
 

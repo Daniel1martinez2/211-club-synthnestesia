@@ -53,11 +53,20 @@ function setupHistogram (shapes, sounds) {
 
       // we need to process all shapes and animate, regarless if it's selected or not
       shapes.forEach(shape => {
-        if(soundIndex === shape.variables.sound // if current sound data is same as sound selected for this shape
-          && data[shape.variables.barSelected] >= shape.variables.threshold // if current volume is greater than or equals as threshold
-          && Date.now() - shape.variables.lastTouch > 200) { // if last touch was 200 or more milliseconds ago
-          shape.variables.lastTouch = Date.now();
-          shape.pulse();
+        if(soundIndex === shape.variables.sound){ // if current sound data is same as sound selected for this shape
+          const value = data[shape.variables.barSelected];
+          switch(shape.variables.type) {
+            case 0:
+              if(value >= shape.variables.threshold // if current volume is greater than or equals as threshold
+                && Date.now() - shape.variables.lastTouch > 200) { // if last touch was 200 or more milliseconds ago
+                shape.variables.lastTouch = Date.now();
+                shape.animate();
+              }
+              break;
+            case 1:
+              shape.animate(map(value, -100, shape.variables.threshold, 1, 0));
+              break;
+          }
         }
       });
     });

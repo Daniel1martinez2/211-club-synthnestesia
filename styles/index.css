@@ -342,7 +342,12 @@
 }
 
 .content__svg {
+  fill: none;
   position: absolute;
+}
+
+.content:hover .viz_line_anchor {
+  opacity: 1;
 }
 
 .especial-text {
@@ -473,6 +478,22 @@
   z-index: 100;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+}
+
+.viz_line_anchor {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  z-index: 100;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  -webkit-transition: opacity .4s ease;
+  transition: opacity .4s ease;
+  opacity: 0;
+  background-image: url(../svg/asterisk.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 .selected {

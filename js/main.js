@@ -29,13 +29,14 @@ window.addEventListener('load', () => {
     shapeMenu.style.transform = `translate(-50%, calc(-100% - ${size / 2 + 17}px))`;
   }
 
-  const createShape = (shapeType, size, color, pos) => {
+  const createShape = (shapeType, size, color, pos, extra) => {
     let newShape;
     switch (shapeType) {
       case 0:
         newShape = createBall();
         break;
       case 1:
+        newShape = createLine(extra);
       default:
         break;
     }
@@ -69,8 +70,14 @@ window.addEventListener('load', () => {
     shapes.push(newShape);
   }
 
+  window.createShape = createShape;
+
   animMenu.querySelectorAll('button').forEach((item, index) => {
     item.addEventListener('click', () => {
+      if(index === 1) {
+        allowDraw = true;
+        return;
+      }
       createShape(index, 50, 'black', newShapePos);
     });
   });
@@ -101,43 +108,6 @@ window.addEventListener('load', () => {
     document.querySelector(`.tracks__item:nth-child(${trackItemIndex + 1})`)?.classList.add('tracks__item--active');
   }
 
-  let db;
-  //stuff
-  let request = indexedDB.open('testPics', 1);
-
-  request.onerror = function(e) {
-    console.error('Unable to open database.');
-  }
-
-  request.onsuccess = function(e) {
-    db = e.target.result;
-    console.log('db opened');
-
-
-    let trans = db.transaction(['cachedForms'], 'readonly');
-
-    let req = trans.objectStore('cachedForms').get(4);
-    req.onsuccess = function(e) {
-      let record = e.target.result;
-      console.log('get success', (record.data));
-      const sound = getAudioInfo({ url: record.data, name: 'ásdasda' })
-      console.log(sound);
-sounds.push(sound)
-      //sound.elem.play();
-      //const file = new Blob(new Uint8Array(record.data));
-      //console.log(file)
-      
-      //image.src = 'data:image/jpeg;base64,' + btoa(record.data);
-    }
-  }
-
-  request.onupgradeneeded = function(e) {
-    let db = e.target.result;
-    db.createObjectStore('cachedForms', {keyPath:'id', autoIncrement: true});
-    dbReady = true;
-  }
-
-
   // aquí estamos haciendo el proceso de cargar archivos y añadiéndolo a sounds
   const Blob = window.URL || window.webkitURL;
   const tracks = document.querySelector('.tracks');
@@ -147,30 +117,6 @@ sounds.push(sound)
     const file = fileInput.files[0];
     const fileURL = Blob.createObjectURL(file);
     createSound({ url: fileURL, name: file.name }); 
-
-    var reader = new FileReader()
-    reader.readAsDataURL(file);
-
-    reader.onload = function(e) {
-      //alert(e.target.result);
-      let bits = e.target.result;
-      let ob = {
-        created:new Date(),
-        data:bits
-      };
-
-      let trans = db.transaction(['cachedForms'], 'readwrite');
-      let addReq = trans.objectStore('cachedForms').add(ob);
-
-      addReq.onerror = function(e) {
-        console.log('error storing data');
-        console.error(e);
-      }
-
-      trans.oncomplete = function(e) {
-        console.log('data stored');
-      }
-    }
   });
   //creat sounds >>>>>>
   const createSound = ({ url, name }) => {
@@ -241,7 +187,7 @@ sounds.push(sound)
       soundURLs.forEach(createSound); 
     }
   }
-  recreateFromLocalStorage();
+  // recreateFromLocalStorage();
 
   window.addEventListener('click', updateLocalStorage);
 

@@ -1,3 +1,19 @@
+const getVariables = () => {
+  return {
+    barSelected: 0,
+    threshold: 0,
+    lastTouch: 0,
+    sound: 0,
+    start: 0,
+    end: 0,
+    color: '',
+    size: 0,
+    x: 0,
+    y: 0,
+    type: 0,
+  };
+}
+
 function createBall() {
   const ball = document.createElement('div');
   ball.classList.add('viz_ball');
@@ -15,22 +31,11 @@ function createBall() {
   });
   tl.pause();
 
-  function pulse() {
+  function animate() {
     tl.play(0);
   }
 
-  const variables = {
-    barSelected: 0,
-    threshold: 0,
-    lastTouch: 0,
-    sound: 0,
-    start: 0,
-    end: 0,
-    color: '',
-    size: 0,
-    x: 0,
-    y: 0,
-  }
+  const variables = getVariables();
 
   const setSize = (newSize) => {
     variables.size = newSize;
@@ -52,7 +57,49 @@ function createBall() {
 
   return {
     elem: ball,
-    pulse,
+    animate,
+    setSize,
+    setColor,
+    setPos,
+    variables,
+  };
+}
+
+
+function createLine({ path, length }) {
+  const anchor = document.createElement('div');
+  anchor.classList.add('viz_line_anchor');
+
+  function animate(value) {
+    if(value < .06) value = .06;
+    if(value > 1) value = 1;
+    path.style.strokeDashoffset = length * value;
+  }
+
+  const variables = getVariables();
+
+  const setSize = (newSize) => {
+    variables.size = newSize;
+    path.setAttribute('stroke-width', newSize);
+  }
+
+  const setColor = (newColor) => {
+    variables.color = newColor;
+    path.setAttribute('stroke', newColor);
+  }
+  
+  const setPos = (x, y) => {
+    variables.x = x;
+    variables.y = y;
+    anchor.style.top = y + 'px';
+    anchor.style.left = x + 'px';
+  }
+
+  variables.type = 1;
+
+  return {
+    elem: anchor,
+    animate,
     setSize,
     setColor,
     setPos,

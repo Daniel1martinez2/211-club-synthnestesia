@@ -9,6 +9,20 @@
   transform: translate(-50%, -50%);
 }
 
+.viz_line_anchor {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  z-index: 100;
+  transform: translate(-50%, -50%);
+  transition: opacity .4s ease;
+  opacity: 0;
+  background-image: url(../svg/asterisk.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
 .selected {
   border: 2px dashed red;
 }
