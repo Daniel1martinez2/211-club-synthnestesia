@@ -350,6 +350,10 @@
   opacity: 1;
 }
 
+.content--drawing {
+  cursor: url("../svg/pen.svg"), auto;
+}
+
 .especial-text {
   font-weight: bold;
   color: #d2d2d2;

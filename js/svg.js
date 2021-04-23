@@ -37,6 +37,7 @@ svg.addEventListener('mousedown', (event) => {
 const releaseMouse = () => {
   if(!allowDraw || !newPath) return;
   allowDraw = false;
+  document.querySelector('.content').classList.remove('content--drawing'); 
   const size = lineInfo.size;
   newPath.style.strokeDasharray = size;
   newPath.style.strokeDashoffset = 0;

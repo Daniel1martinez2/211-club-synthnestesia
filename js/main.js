@@ -76,6 +76,7 @@ window.addEventListener('load', () => {
     item.addEventListener('click', () => {
       if(index === 1) {
         allowDraw = true;
+        content.classList.add('content--drawing'); 
         return;
       }
       createShape(index, 50, 'black', newShapePos);

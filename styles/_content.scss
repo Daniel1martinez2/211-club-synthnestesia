@@ -1,4 +1,5 @@
 .content {
+
   background-color: rgb(233, 233, 233);
   border-radius: 8px;
   box-sizing: border-box;
@@ -24,6 +25,9 @@
     .viz_line_anchor {
       opacity: 1;
     }
+  }
+  &--drawing{
+    cursor: url("../svg/pen.svg"),auto; 
   }
 }
 
