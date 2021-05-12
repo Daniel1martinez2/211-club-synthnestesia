@@ -1,17 +1,28 @@
 const getVariables = () => {
-  return {
+
+  const setTime = (start, end) => {
+    if(start < 0) start = 0;
+    if(end > 1) end = 1;
+    variables.timeStart = start;
+    variables.timeEnd = end;
+  }
+
+  const variables = {
     barSelected: 0,
     threshold: 0,
     lastTouch: 0,
     sound: 0,
-    start: 0,
-    end: 0,
+    timeStart: 0,
+    timeEnd: 0,
     color: '',
     size: 0,
     x: 0,
     y: 0,
     type: 0,
+    setTime,
   };
+
+  return variables;
 }
 
 function createBall() {
@@ -61,6 +72,7 @@ function createBall() {
     setSize,
     setColor,
     setPos,
+    setTime: variables.setTime,
     variables,
   };
 }
@@ -103,6 +115,7 @@ function createLine({ path, length }) {
     setSize,
     setColor,
     setPos,
+    setTime: variables.setTime,
     variables,
   };
 }

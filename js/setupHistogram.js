@@ -30,6 +30,11 @@ function setupHistogram (shapes, sounds) {
   });
 
   function process () {
+    
+    const maxSound = sounds.find(({ elem }) => elem.duration === timeHandlersInfo.duration);
+    if(!maxSound) return;
+    updateTimeLineUI(maxSound.elem.currentTime / maxSound.elem.duration)
+
     sounds.forEach((currentSound, soundIndex) => {
       const { analyser, data, length } = currentSound;
 

@@ -44,15 +44,19 @@ window.addEventListener('load', () => {
     newShape.setSize(size);
     newShape.setColor(color);
     newShape.setPos(pos.x, pos.y);
+    newShape.setTime(timeHandlersInfo.main, timeHandlersInfo.main + .1);
+    // updateTimeHandlerUI(newShape.variables.timeStart, newShape.variables.timeEnd);
     contentInner.appendChild(newShape.elem);
     const shapeIndex = shapes.length;
 
     const selectShape = () => {
       changeShape(shapeIndex);
       selectedShape = newShape;
+      window.selectedShape = selectedShape;
       shapes.forEach(s => s.elem.classList.remove('selected'));
       newShape.elem.classList.add('selected');
       activateTrackItem(selectedShape.variables.sound);
+      updateTimeHandlerUI(selectedShape.variables.timeStart, selectedShape.variables.timeEnd);
     }
     newShape.elem.addEventListener('click', selectShape);
 
@@ -117,7 +121,12 @@ window.addEventListener('load', () => {
   fileInput.addEventListener('change', (event) => {
     const file = fileInput.files[0];
     const fileURL = Blob.createObjectURL(file);
-    createSound({ url: fileURL, name: file.name }); 
+    createSound({ url: fileURL, name: file.name });
+
+    setTimeout(() => {
+      const maxDuration = Math.max(...sounds.map(({ elem }) => elem.duration));
+      updateDuration(maxDuration);
+    }, 100);
   });
   //creat sounds >>>>>>
   const createSound = ({ url, name }) => {
