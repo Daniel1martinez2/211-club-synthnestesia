@@ -19,11 +19,19 @@
   &__svg {
     fill: none;
     position: absolute;
+
+    path {
+      transition: opacity .2s ease;
+    }
   }
 
   &:hover {
     .viz_line_anchor {
       opacity: 1;
+    }
+
+    .viz_hidden {
+      opacity: 1 !important;
     }
   }
   &--drawing{

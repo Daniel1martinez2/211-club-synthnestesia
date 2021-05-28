@@ -39,6 +39,7 @@ window.addEventListener('mousemove', (event) => {
   switch(isMousePressed) {
     case 'main':
       timeHandlersInfo.main = percentage;
+      setTime(timeHandlersInfo.main);
       updateTimeLineUI(percentage);
       break;
     case 'left':
@@ -62,7 +63,8 @@ window.addEventListener('mousemove', (event) => {
 });
 
 window.addEventListener('mouseup', () => {
-  isMousePressed = null; 
+  // if(isMousePressed === 'main') setTime(timeHandlersInfo.main);
+  isMousePressed = null;
 });
 
 const updateTimeHandlerUI = (left, right) => {

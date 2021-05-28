@@ -33,7 +33,7 @@ function setupHistogram (shapes, sounds) {
     
     const maxSound = sounds.find(({ elem }) => elem.duration === timeHandlersInfo.duration);
     if(!maxSound) return;
-    updateTimeLineUI(maxSound.elem.currentTime / maxSound.elem.duration)
+    if(isPlaying) updateTimeLineUI(maxSound.elem.currentTime / maxSound.elem.duration);
 
     sounds.forEach((currentSound, soundIndex) => {
       const { analyser, data, length } = currentSound;
@@ -59,6 +59,27 @@ function setupHistogram (shapes, sounds) {
       // we need to process all shapes and animate, regarless if it's selected or not
       shapes.forEach(shape => {
         if(soundIndex === shape.variables.sound){ // if current sound data is same as sound selected for this shape
+
+          const start = shape.variables.timeStart * currentSound.elem.duration;
+          const end = shape.variables.timeEnd * currentSound.elem.duration;
+          const isInTime = currentSound.elem.currentTime > start && currentSound.elem.currentTime < end;
+          const elemToHide = shape.variables.type === 0 ? shape.elem : shape.path;
+
+          if(isInTime && shape.variables.hidden) {
+            shape.variables.hidden = false;
+            elemToHide.classList.remove('viz_hidden');
+          }
+
+          if(!isInTime && !shape.variables.hidden) {
+            shape.variables.hidden = true;
+            elemToHide.classList.add('viz_hidden');
+          }
+
+          // console.log(isInTime, shape.variables.hidden, currentSound.elem.currentTime, shape.variables.timeStart, shape.variables.timeEnd);
+          if(shape.variables.hidden) {
+            return;
+          }
+
           const value = data[shape.variables.barSelected];
           switch(shape.variables.type) {
             case 0:
@@ -84,6 +105,11 @@ function setupHistogram (shapes, sounds) {
     return isPlaying;
   }
 
+  function setTime (time) {
+    const maxSound = sounds.find(({ elem }) => elem.duration === timeHandlersInfo.duration);
+    sounds.forEach(sound => sound.elem.currentTime = time * maxSound.elem.duration);
+  }
+
   function changeSound (index) {
     if(!shapes[selectedShape]) return;
     shapes[selectedShape].variables.sound = index;
@@ -99,5 +125,6 @@ function setupHistogram (shapes, sounds) {
     toggle,
     changeSound,
     changeShape,
+    setTime,
   }
 }

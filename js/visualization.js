@@ -20,6 +20,7 @@ const getVariables = () => {
     y: 0,
     type: 0,
     setTime,
+    hidden: false,
   };
 
   return variables;
@@ -117,5 +118,6 @@ function createLine({ path, length }) {
     setPos,
     setTime: variables.setTime,
     variables,
+    path,
   };
 }

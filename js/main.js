@@ -45,7 +45,6 @@ window.addEventListener('load', () => {
     newShape.setColor(color);
     newShape.setPos(pos.x, pos.y);
     newShape.setTime(timeHandlersInfo.main, timeHandlersInfo.main + .1);
-    // updateTimeHandlerUI(newShape.variables.timeStart, newShape.variables.timeEnd);
     contentInner.appendChild(newShape.elem);
     const shapeIndex = shapes.length;
 
@@ -163,8 +162,11 @@ window.addEventListener('load', () => {
     process,
     toggle,
     changeSound,
-    changeShape
+    changeShape,
+    setTime,
   } = setupHistogram(shapes, sounds);
+
+  window.setTime = setTime;
 
   function draw() {
     //Schedule next redraw
@@ -175,29 +177,21 @@ window.addEventListener('load', () => {
   draw();
 
   function updateLocalStorage() {
-    const soundURLs = sounds.map(({ url, name }) => ({ url, name }));
     const shapesVariables = shapes.map(({ variables }) => variables);
 
     localStorage.setItem('shapes', JSON.stringify(shapesVariables));
-    localStorage.setItem('soundURLs', JSON.stringify(soundURLs));
   }
   //recreating the localStorage data
   function recreateFromLocalStorage() {
     const shapesFromLS = localStorage.getItem('shapes');
-    const soundURLsFromLS = localStorage.getItem('soundURLs'); 
     if (shapesFromLS) {
       const shapesVariables = JSON.parse(shapesFromLS);
       shapesVariables.forEach(variables => {
         createShape(0, variables.size, variables.color, variables);
       });
     }
-    if(soundURLsFromLS){
-      const soundURLs = JSON.parse(soundURLsFromLS); 
-      //paso la función de esa manera, porque el primer elemento que el forEach dá es el objeto iterado
-      soundURLs.forEach(createSound); 
-    }
   }
-  // recreateFromLocalStorage();
+  recreateFromLocalStorage();
 
   window.addEventListener('click', updateLocalStorage);
 
